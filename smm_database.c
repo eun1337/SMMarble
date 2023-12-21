@@ -2,7 +2,7 @@
 //  smm_database.c
 //  Sookmyung Marble
 //  Database platform code for storing marble board elements
-//  Created by Juyeop Kim on 2023/11/05.
+//  Created on 2023/12/19
 //
 
 #include "smm_common.h"
@@ -98,6 +98,7 @@ static int updateIndex(int list_nr)
                 3. make the last node's next pointer to point the new node
                 4. update the index
 */
+
 int smmdb_addTail(int list_nr, void* obj)
 {
     node_t* ndPtr;

@@ -1,9 +1,9 @@
 //
 //  smm_node.c
 //  SMMarble
+//  Created on 2023/12/19
 //
-//  Created by Juyeop Kim on 2023/11/05.
-//
+
 
 #include "smm_common.h"
 #include "smm_object.h"
@@ -14,66 +14,90 @@
 #define MAX_NODE        100
 
 
-static char smmNodeName[SMMNODE_TYPE_MAX][20] ={ 
-	"강의",
-	"식당",
-	"실험실",
-	"집",
-	"실험실로이동",
-	"음식찬스",
-	"축제시간"
+static char smmNodeName[SMMNODE_TYPE_MAX][MAX_CHARNAME] = {
+       "강의",
+       "식당",
+       "실험실",
+       "집",
+       "실험실로이동",
+       "음식찬스",
+       "측제시간"
 };
 
 char* smmObj_getTypeName(int type)
 {
-	return (char*)smmNodeName[type];
-} 
+      return (char*)smmNodeName[type];
+}
 
-static char smmObj_name[MAX_NODE][MAX_CHARNAME];
-static int smmObj_type[MAX_NODE];
-static int smmObj_credit[MAX_NODE];
-static int smmObj_energy[MAX_NODE];
-static int smmObj_noNode=0;
+typedef enum smmObjGrade {
+	smmObjGrade_Ap = 0;
+	smmObjGrade_A0,
+	smmObjGrade_Am,
+	smmObjGrade_Bp,
+	smmObjGrade_B0,
+	smmObjGrade_Bm,
+	smmObjGrade_Cp,
+	smmObjGrade_C0,
+	smmObjGrade_Cm
+} smmObjGrade_e;
 
+//1. 구조체 형식 정의 
+typedef struct smmObject {
+       char name[MAX_CHARNAME];
+       smmObjType_e objType;
+       int type;
+       int credit;
+       int energy;
+       smmObjType_e grade;
+} smmObject_t;
 
+// smmObject_t smm_node[MAX_NODE];
+// static int smmObj_noNode = 0;
 
+//3. 관련 함수 변경 
 //object generation
-void smmObj_genNode(char* name, int type, int credit, int energy)
+void* smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade)
 {
-    strcpy(smmObj_name[smmObj_noNode], name);
-    smmObj_type[smmObj_noNode] = type;
-    smmObj_credit[smmObj_noNode] = credit;
-    smmObj_energy[smmObj_noNode] = energy;
+    smmObject_t* ptr;
     
-    smmObj_noNode++;
+    prt = (smmObject_t*)malloc(sizeof(smmObject_t));
+    
+    strcpy(prt->name, name);
+    prt->objType = objType;
+    prt->type = type;
+    prt->credit = credit;
+    prt->energy = energy;
+    prt-> grade = grade;
+    
+    return ptr;
 }
 
-char* smmObj_getNodeName(int node_nr)
+//3. 관련 함수 변경 
+char* smmObj_getNodeName(void* obj)
 {
-    return smmObj_name[smmObj_noNode];
+    smmObject_t* ptr = (smmObject_t*)odj;
+	 
+	return ptr->name;
 }
 
-int smmObj_getNodeType(int node_nr)
+//3. 관련 함수 변경 
+int smmObj_getNodeType(void* obj)
 {
-    return smmObj_type[node_nr];
+    smmObject_t* ptr = (smmObject_t*)odj;
+	
+	return ptr->type;
 }
 
-#if 0
-
-
-//member retrieving
-
-
-
-//element to string
-char* smmObj_getNodeName(smmNode_e type)
+int smmObj_getNodeCredit(void* obj)
 {
-    return smmNodeName[type];
+    smmObject_t* ptr = (smmObject_t*)odj;
+	
+	return ptr->credit;
 }
 
-char* smmObj_getGradeName(smmGrade_e grade)
+int smmObj_getNodeEnergy(void* obj)
 {
-    return smmGradeName[grade];
+    smmObject_t* ptr = (smmObject_t*)odj;
+	
+	return ptr->energy;
 }
-
-#endif
